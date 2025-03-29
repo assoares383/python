@@ -66,7 +66,7 @@ def pix_confirmation():
     # Confirmacao
     payment.paid = True
     db.session.commit()
-    socketio.emit('payment_confirmation', {'payment_id': payment.id})
+    socketio.emit(f'payment-confirmed-{payment.id}')
 
     return jsonify({'message': 'The payment has been confirmed'})
 
@@ -74,6 +74,13 @@ def pix_confirmation():
 @app.route('/payments/pix/<int:payment_id>', methods=['GET'])
 def payment_pix_age(payment_id):
     payment = Payment.query.get(payment_id)
+
+    if payment.paid:
+        return render_template(
+            'confirmed_payment.html',
+            payment_id=payment_id, 
+            valor=payment.valor, 
+        )
 
     return render_template(
         'payment.html', 

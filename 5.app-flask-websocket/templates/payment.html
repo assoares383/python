@@ -65,6 +65,10 @@
       socket.on('connect', () => {
         console.log('Websocket Connected')
       })
+      socket.on('payment-confirmed-{{ payment_id }}', () => {
+        console.log('Pagamento Confirmado!')
+        location.reload();
+      })
     </script>
   </body>
 </html>
